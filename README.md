@@ -4,10 +4,6 @@ Platform yang memberikan dukungan yang dibutuhkan dalam mengatasi tekanan akadem
 
 ### Installation
 
-```sh
-cd server
-```
-
 Install semua dependensi yang diperlukan:
 
 ```sh
