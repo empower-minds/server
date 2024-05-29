@@ -1,8 +1,12 @@
 const db = require('../models');
+const bcrypt = require("bcryptjs");
 const Role = db.Role;
 const Jenjang = db.Jenjang;
 const Jurusan = db.Jurusan;
 const Kelas = db.Kelas;
+const Admin = db.Admin;
+const Mahasiswa = db.Mahasiswa;
+const Penulis = db.Penulis;
 
 async function seed() {
   try {
@@ -81,6 +85,52 @@ async function seed() {
       ];
       await Kelas.bulkCreate(kelasData);
       console.log("Data Kelas berhasil ditambahkan.");
+    }
+
+    // Check if admin user already exists
+    const adminCount = await Admin.count();
+    if (adminCount === 0) {
+      const hashedPasswordAdmin = await bcrypt.hash("admin123", 10);
+      const adminData = {
+        email: "admin@mail.com",
+        nama: "Admin 1",
+        password: hashedPasswordAdmin,
+        id_role: 1
+      };
+      await Admin.create(adminData);
+      console.log("Admin user berhasil ditambahkan.");
+    }
+
+    // Check if mahasiswa user already exists
+    const mahasiswaCount = await Mahasiswa.count();
+    if (mahasiswaCount === 0) {
+      const hashedPasswordMahasiswa = await bcrypt.hash("tiara123", 10);
+      const mahasiswaData = {
+        nrp: "3122510609",
+        nama: "Tiara Putri Ramadhani",
+        email: "tiarapr@it.student.pens.ac.id",
+        password: hashedPasswordMahasiswa,
+        tgl_lahir: "2001-12-05",
+        kode_kelas: "K016",
+        thn_angkatan: 2020,
+        id_role: 2 // Pastikan id_role sesuai dengan role mahasiswa
+      };
+      await Mahasiswa.create(mahasiswaData);
+      console.log("Mahasiswa user berhasil ditambahkan.");
+    }
+
+    // Check if penulis user already exists
+    const penulisCount = await Penulis.count();
+    if (penulisCount === 0) {
+      const hashedPasswordPenulis = await bcrypt.hash("penulis123", 10);
+      const penulisData = {
+        email: "penulis@mail.com",
+        nama: "Penulis 1",
+        password: hashedPasswordPenulis,
+        id_role: 3
+      };
+      await Penulis.create(penulisData);
+      console.log("Penulis user berhasil ditambahkan.");
     }
   } catch (error) {
     console.error("Gagal menambahkan data:", error.message);
